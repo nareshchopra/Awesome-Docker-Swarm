@@ -1,0 +1,59 @@
+1. Create two instances on AWS. First as Master and Second as work. Can create multiple workers.
+2. Update your system and install docker.
+sudo apt-get update && sudo apt-get install docker.io
+3. Add User in docker group
+sudo usermod -aG docker $USER
+4. Reboot your system. Do 2,3 andn 4 steps in Master and all worker node.
+sudo reboot
+5. Run below command in Master instance, you will get one code that you have to run in instance to whom you want to make worker. Also need to add one port number in AWS instance.
+docker swarm init
+6. Run below command in master to get list of all worker node.
+docker node ls
+7. Clone the below project.
+git clone https://github.com/nareshchopra/django-todo-cicd.git
+8. Create docker-compose.yml file. Follow the 
+cd django-todo-cicd/
+vim docker-compose.yml to create image - https://github.com/nareshchopra/Awesome-docker-commands.git
+vim docker-compose.yml to deploy in docker swarm
+
+version: "3.9"
+services:
+  django_todo_app:
+    image: djando_todo_app:latest
+    ports:
+      - 8000:8000
+    deploy:
+      replicas: 3
+  mysql_db:
+    image: mysql:5.7
+    ports:
+      - 80:80
+    environment:
+      MYSQL_ROOT_PASSWORD: "test@123"
+      
+But in docker-compose file - We can only add images if we want to create service in docker swarm using docker-compose.yml. So remove build option and use images instead.
+you have to create two docker file, one to create image and second to run container on docker swarm.
+9. Create image of your app.
+docker build . -t djando_todo_app:latest
+or using docker-compose build for docker-compose.yml
+10. Check images
+docker images
+11. Now run below command to deply services on docker swarm
+docker stack deploy -c docker-compose.yml django-app-stack
+12. Run below command to check container
+docker ps
+13. To check services
+docker service ls
+14. To scaleup the services
+docker service scale django-app-stack_django_todo_app=5
+15. To downgrade the service
+docker service scale django-app-stack_django_todo_app=2
+16. To push the image in dockerhub
+docker login
+Enter username and password.
+17. To tag image
+docker tag djando_todo_app naresh92chopra/djando_todo_app:latest
+18. To push image on dockerhub
+docker image push naresh92chopra/djando_todo_app:latest
+19. Another way to create service and deploy on Docker dwarm
+docker service create --name django_todo_service --replicas 3 publish 8000:8000 naresh92chopra/djando_todo_app:latest

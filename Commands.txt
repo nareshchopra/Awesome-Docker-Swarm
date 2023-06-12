@@ -57,3 +57,6 @@ docker tag djando_todo_app naresh92chopra/djando_todo_app:latest
 docker image push naresh92chopra/djando_todo_app:latest
 19. Another way to create service and deploy on Docker dwarm
 docker service create --name django_todo_service --replicas 3 publish 8000:8000 naresh92chopra/djando_todo_app:latest
+20. We can kill any container but it will revive by master.
+21. If we want to kill service
+docker service rm django_todo_service

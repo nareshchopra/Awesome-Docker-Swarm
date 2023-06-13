@@ -64,3 +64,8 @@ docker service create --name django_todo_service --replicas 3 publish 8000:8000 
 20. We can kill any container but it will revive by master.
 21. If we want to kill service
 docker service rm django_todo_service
+22. To update the code and deploy inn running container.
+Make changes in code
+Create image again - docker build -t image:latest .
+Now push image to dockerhub.
+now run sudo docker service update --image "imagename" "servicename"

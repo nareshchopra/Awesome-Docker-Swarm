@@ -7,6 +7,10 @@ sudo usermod -aG docker $USER
 sudo reboot
 5. Run below command in Master instance, you will get one code that you have to run in instance to whom you want to make worker. Also need to add one port number in AWS instance.
 docker swarm init
+if you forget the code which help to join docker swarm then run below command to get it again
+sudo docker swarm join-token worker
+if you want to leave swarm
+docker swarm leave
 6. Run below command in master to get list of all worker node.
 docker node ls
 7. Clone the below project.
